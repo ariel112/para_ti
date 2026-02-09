@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>Para Belkis ❤️</title>
+
+<style>
+:root {
+    --red-heart: #d63031;
+    --bg-page: #ff2f92;
+    --card-bg: #f6efe8;
+}
+
+* {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: radial-gradient(circle at top, #ff8fc4, var(--bg-page));
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    overflow: hidden;
+}
+
+/* 📱 Card estilo iPhone */
+.card {
+    width: 94%;
+    max-width: 420px;
+    background: var(--card-bg);
+    border-radius: 35px;
+    padding: 22px;
+    text-align: center;
+    box-shadow: 0 25px 50px rgba(0,0,0,0.35);
+    position: relative;
+}
+
+.hidden { display: none; }
+
+/* ❤️ Botón inicial */
+.heart-btn {
+    font-size: 120px;
+    animation: pulse 1.2s infinite;
+    cursor: pointer;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.25); }
+    100% { transform: scale(1); }
+}
+
+.message {
+    color: var(--red-heart);
+    font-weight: 600;
+    font-size: 1.05rem;
+    margin-bottom: 10px;
+}
+
+/* 🌳 Árbol */
+#tree-svg {
+    width: 100%;
+    max-width: 340px;
+    margin: auto;
+}
+
+/* ❤️ Copa palpitando */
+#leaves {
+    animation: heartBeat 2.5s infinite ease-in-out;
+    transform-origin: center;
+}
+
+@keyframes heartBeat {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.04); }
+    100% { transform: scale(1); }
+}
+
+.leaf {
+    fill: var(--red-heart);
+    transform: scale(0);
+    animation: grow 0.6s forwards ease-out;
+}
+
+@keyframes grow {
+    to { transform: scale(1); }
+}
+
+/* 🍃 Corazones cayendo */
+.falling-heart {
+    position: fixed;
+    font-size: 16px;
+    pointer-events: none;
+    animation: fall linear forwards;
+    opacity: 0.9;
+}
+
+@keyframes fall {
+    0% {
+        transform: translateX(0) translateY(0) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translateX(var(--wind)) translateY(700px) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+.timer-box {
+    margin-top: 10px;
+    background: rgba(255,255,255,0.6);
+    border-radius: 18px;
+    padding: 10px;
+    font-size: 0.9rem;
+}
+
+#timer {
+    font-weight: bold;
+}
+
+.name {
+    margin-top: 10px;
+    font-size: 2.4rem;
+    color: var(--red-heart);
+    font-family: Georgia, serif;
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+    <div id="cover">
+        <div class="heart-btn" id="startBtn">❤️</div>
+        <p style="color:#d63031;font-weight:bold;">Belkis, toca el corazón</p>
+    </div>
+
+    <div id="content" class="hidden">
+        <div class="message">
+           Tienes un magnetismo único para enfrentar retos y construir tu propio camino con determinación y gracia. Lo que te hace especial es que tu fortaleza jamás ha apagado tu calidez; tienes el don de hacer que los demás se sientan vistos mientras tú brillas con luz propia. Tu valor no reside en tus logros, sino en la mujer increíble en la que te conviertes cada día, superándote siempre sin perder tu esencia.
+        </div>
+
+        <svg id="tree-svg" viewBox="0 0 300 350">
+            <!-- Tronco -->
+            <rect x="140" y="210" width="20" height="90" rx="6" fill="#8D5524"/>
+            <g id="leaves"></g>
+        </svg>
+
+        <div class="timer-box">
+            Tu tiempo aquí no se cuenta en años, sino en la fuerza y la alegría que dejas a tu paso:
+            <div id="timer">Cargando...</div>
+        </div>
+
+        <div class="name">Belkis</div>
+    </div>
+</div>
+
+<script>
+const startBtn = document.getElementById("startBtn");
+const cover = document.getElementById("cover");
+const content = document.getElementById("content");
+const birthDate = new Date(1993, 0, 25);
+
+startBtn.onclick = () => {
+    cover.classList.add("hidden");
+    content.classList.remove("hidden");
+    growTree();
+    updateClock();
+    setInterval(updateClock, 1000);
+    setTimeout(startFallingHearts, 2500);
+};
+
+/* ❤️ Árbol idéntico */
+function growTree() {
+    const leaves = document.getElementById("leaves");
+    const cx = 150, cy = 140;
+    let delay = 0;
+
+    for (let t = 0; t < Math.PI * 2; t += 0.12) {
+        for (let r = 0.9; r <= 1.2; r += 0.18) {
+            const x = 16 * Math.pow(Math.sin(t), 3);
+            const y = -(13*Math.cos(t)-5*Math.cos(2*t)-2*Math.cos(3*t)-Math.cos(4*t));
+            const px = cx + x * 6 * r;
+            const py = cy + y * 6 * r;
+
+            setTimeout(() => {
+                const h = document.createElementNS("http://www.w3.org/2000/svg","path");
+                h.setAttribute("class","leaf");
+                h.setAttribute("d",`
+                    M ${px} ${py}
+                    c -4 -4 -10 0 -10 6
+                    c 0 6 10 10 10 14
+                    c 0 -4 10 -8 10 -14
+                    c 0 -6 -6 -10 -10 -6
+                `);
+                leaves.appendChild(h);
+            }, delay);
+            delay += 18;
+        }
+    }
+}
+
+/* 🌬️ Corazones con viento */
+function startFallingHearts() {
+    setInterval(() => {
+        const heart = document.createElement("div");
+        heart.className = "falling-heart";
+        heart.innerHTML = "❤️";
+
+        const tree = document.getElementById("tree-svg").getBoundingClientRect();
+        heart.style.left = tree.left + 80 + Math.random()*180 + "px";
+        heart.style.top = tree.top + 60 + "px";
+        heart.style.fontSize = 14 + Math.random()*10 + "px";
+        heart.style.animationDuration = 3 + Math.random()*3 + "s";
+        heart.style.setProperty("--wind", (-40 + Math.random()*80) + "px");
+
+        document.body.appendChild(heart);
+        setTimeout(() => heart.remove(), 7000);
+    }, 260);
+}
+
+/* ⏳ Contador */
+function updateClock() {
+    const now = new Date();
+    const diff = now - birthDate;
+
+    const years = Math.floor(diff / 31557600000);
+    const days = Math.floor((diff / 86400000) % 365);
+    const h = Math.floor((diff / 3600000) % 24);
+    const m = Math.floor((diff / 60000) % 60);
+    const s = Math.floor((diff / 1000) % 60);
+
+    document.getElementById("timer").innerText =
+        `${years} años, ${days} días, ${h}h ${m}m ${s}s`;
+}
+</script>
+
+</body>
+</html>
